@@ -1,4 +1,5 @@
-import React from 'react';
+"use client";
+import React, { useState } from 'react';
 import ResizableLayout from '@/components/question/resizable-layout';
 import {
     Breadcrumb,
@@ -9,10 +10,11 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { FileText, History } from 'lucide-react';
-
+import { FileText, Edit, Send, History } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function WritingQuestionPage() {
-    const leftContent = (
+    const leftContent = () => {
+        return (
         <div className="">
             <h2 className="pl-4 h-10 flex gap-2 items-center bg-secondary-300">
                 <div className="flex items-center gap-2 text-sm">
@@ -40,111 +42,64 @@ export default function WritingQuestionPage() {
                     This is the left side of the resizable layout. You can use the button in the
                     top-right corner to toggle the right content visibility.
                 </p>
-                <p className="mb-4">
-                    When the right content is visible, you can drag the separator to adjust the
-                    width. The separator is only visible when you hover over it.
-                </p>
-                <p className="mb-4">
-                    The dragging effect has been optimized for smoother performance.
-                </p>
-                <p className="mb-4">
-                    This content area is now scrollable if the content exceeds the available height.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
-                <p className="mb-4">
-                    This is the left side of the resizable layout. You can use the button in the
-                    top-right corner to toggle the right content visibility.
-                </p>
             </div>
         </div>
-    );
+    )};
 
-    const rightContent = (
-        <div className="p-4">
-            <h2 className="text-xl font-semibold mb-3">Right Content</h2>
-            <p>
-                This is the right side of the resizable layout. It will adjust its size as you drag
-                the separator, and can be toggled on/off using the button in the left content area.
-            </p>
-            <p className="mt-2">The resizing should now feel smoother and more responsive.</p>
-            <ul className="list-disc list-inside mt-2">
-                <li>Item 1</li>
-                <li>Item 2</li>
-                <li>Item 3</li>
-            </ul>
+    const rightContent = () => {
+        const [tabs, setTabs] = useState([
+            { id: 'editorial', label: 'Editorial', icon: Edit },
+            { id: 'submissions', label: 'Submissions', icon: Send },
+          ])
+          const [activeTab, setActiveTab] = useState(tabs[0].id)
+          const removeTab = (tabId: string) => {
+            const newTabs = tabs.filter(tab => tab.id !== tabId)
+            setTabs(newTabs)
+            if (activeTab === tabId && newTabs.length > 0) {
+              setActiveTab(newTabs[0].id)
+            }
+          }
+        return (
+        <div className="w-full">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="px-2 h-10 gap-2 bg-secondary-300 flex flex-col items-start">
+                <TabsList className='bg-transparent rounded-none flex'>
+                {tabs.map((tab, index) => (
+                    <div className='flex flex-row items-center'>
+                        <TabsTrigger
+                        key={tab.id}
+                        value={tab.id}
+                        className="data-[state=active]:bg-secondary-500 data-[state=active]:text-white gap-2"
+                            >
+                                <tab.icon className="h-4 w-4" />
+                                {tab.label}
+                            </TabsTrigger>
+                        {index < tabs.length - 1 && <Separator orientation="vertical" className="h-4 bg-secondary-50 mx-1" />}
+                    </div>
+                    
+                    ))}
+                </TabsList>
+                {tabs.map((tab) => {
+                    return (
+                        <TabsContent key={tab.id} value={tab.id} className="p-4">
+                            {tab.id}
+                        </TabsContent>
+                    )
+                })}
+            </Tabs>
+            {/* <h2 className="pl-4 h-10 flex gap-2 items-center bg-secondary-300">
+                <div className="flex items-center gap-2 text-sm">
+                    <FileText className="stroke-slate-500 -mr-1 h-4 w-4" />
+                    Description
+                </div>
+                <Separator orientation="vertical" className=" h-4 bg-secondary-50" />
+                <div className="flex items-center gap-2 text-sm">
+                    <History className="stroke-slate-500 -mr-1 h-4 w-4" />
+                    Submissions
+                </div>
+            </h2> */}
+            
         </div>
-    );
+    )};
 
     return (
         <div className="mt-2 mb-2 ml-2">

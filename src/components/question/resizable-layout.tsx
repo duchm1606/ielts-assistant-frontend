@@ -4,8 +4,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ResizableLayoutProps {
-    leftContent: React.ReactNode;
-    rightContent: React.ReactNode;
+    leftContent: () => React.ReactNode;
+    rightContent: () => React.ReactNode;
     initialLeftWidth?: number;
     minLeftWidth?: number;
     maxLeftWidth?: number;
@@ -72,7 +72,7 @@ export default function ResizableLayout({
                 style={{ width: isRightContentVisible ? `${leftWidth}%` : '100%' }}
                 className="relative rounded-md shadow-sm border mr-1"
             >
-                {leftContent}
+                {leftContent()}
             </div>
             {isRightContentVisible && (
                 <>
@@ -99,7 +99,7 @@ export default function ResizableLayout({
                         style={{ width: `${100 - leftWidth}%` }}
                         className="overflow-auto ml-1 border rounded-md shadow-sm"
                     >
-                        {rightContent}
+                        {rightContent()}
                     </div>
                 </>
             )}
