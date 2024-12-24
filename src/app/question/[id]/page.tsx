@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { ClipboardList, BookOpen, Pencil, MessageSquare } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function WritingQuestionPage() {
     const leftContent = () => {
@@ -113,15 +114,22 @@ export default function WritingQuestionPage() {
                     iconColor: 'text-violet-500',
                 },
             ];
+            const [text, setText] = useState('');
+
             switch (activeTab) {
                 case 'editorial':
                     return (
-                        <div>
-                            <Textarea
-                                className="min-h-[300px]"
-                                // value={submissionContent}
-                                // onChange={(e) => setSubmissionContent(e.target.value)}
+                        <div className="flex flex-col justify-between h-[85dvh]">
+                            <textarea
+                                className="w-full h-5/6 resize-none focus:outline-none"
+                                placeholder="Start typing here..."
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
                             />
+                            <div className="flex flex-row justify-between">
+                                <div className="ml-2">{text.length} characters</div>
+                                <Button onClick={() => setText('')}>Clear</Button>
+                            </div>
                         </div>
                     );
                 // TODO: Devide content into components
