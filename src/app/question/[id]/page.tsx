@@ -8,16 +8,40 @@ import {
     BreadcrumbList,
     BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "@/components/ui/tooltip";
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { FileText, Edit, Send, History } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
-import { ClipboardList, BookOpen, Pencil, MessageSquare } from 'lucide-react';
+import { ClipboardList, BookOpen, Pencil, MessageSquare, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import SubmissionFeedbackDetail from '@/components/submission/SubmissionFeedbackDetail';
+import { ISubmissionFeedbackDetail } from '@/type/ielts-submission';
 
 export default function WritingQuestionPage() {
+    const passage = `
+        React is a popular JavaScript library for building user interfaces. It was developed by Facebook and has gained widespread adoption in the web development community. React allows developers to create reusable UI components and efficiently update and render them when the underlying data changes. This approach, known as the virtual DOM, helps to optimize performance by minimizing direct manipulation of the actual DOM. React's component-based architecture promotes modularity and reusability, making it easier to manage complex user interfaces. Additionally, React's unidirectional data flow and state management capabilities contribute to more predictable and maintainable code.
+    `
+    const [text, setText] = useState('');
+    const feedbackDetails: ISubmissionFeedbackDetail[] = [
+        {
+          word: 'React',
+          feedbackType: 'can_improve',
+          feedback: 'You can improve the way you write React code by following best practices and writing cleaner code.'
+        },
+        {
+          word: 'popular',
+          feedbackType: 'error',
+          feedback: 'Great job on using TypeScript! It is a great way to catch errors early and make your code more'
+        }
+      ];
     const leftContent = () => {
         return (
             <div className="">
@@ -114,7 +138,6 @@ export default function WritingQuestionPage() {
                     iconColor: 'text-violet-500',
                 },
             ];
-            const [text, setText] = useState('');
 
             switch (activeTab) {
                 case 'editorial':
@@ -183,25 +206,36 @@ export default function WritingQuestionPage() {
                                                                     {category.name}
                                                                 </span>
                                                             </div>
-                                                            <div className="font-medium">
+                                                            <div className='flex flex-row items-center gap-2'>
+                                                            <div className="font-sm">
                                                                 <span className="text-gray-900">
                                                                     {category.score.toFixed(1)}
                                                                 </span>
-                                                                <span className="text-gray-500">
-                                                                    {' '}
-                                                                    / 9
-                                                                </span>
                                                             </div>
+                                                            <Tooltip>
+                                                                <TooltipTrigger>
+                                                                <Info className='w-5 h-5'/>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent side="top" >
+                                                                    {category.description}
+                                                                </TooltipContent>
+                                                            </Tooltip>
+
+                                                            </div>
+                                                            
                                                         </div>
-                                                        <p className="text-sm text-gray-600 px-4">
-                                                            {category.description}
-                                                        </p>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
                                     </div>
                                 </Card>
+                            </div>
+                            <div className='mt-2'>
+                                <div className='font-semibold'>Submission Detail</div>
+                                <SubmissionFeedbackDetail content={passage}
+                                feedbacks={feedbackDetails}
+                                />
                             </div>
                         </div>
                     );
