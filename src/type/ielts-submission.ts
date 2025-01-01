@@ -1,5 +1,6 @@
 export interface ISubmissionFeedbackDetail {
-    word: string;
-    feedback: string;
-    feedbackType: string;
+    target_item: string;
+    correct_item: string;
+    feedback_type: string;
+    message: string;
 }
